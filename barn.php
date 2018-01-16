@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 	<?php 
+	include_once('Cls_CommonFunction.php');
+	$Obj_Commonfunction=new CommonFunctions();
+	$URL=$Obj_Commonfunction->config("APIURL");
 	if(isset($_GET['page']) && $_GET['page']>0){$Page=$_GET['page'];}else{$Page=1;}
 	?>
 	<head>
@@ -10,18 +13,17 @@
 	<?php
 		if(isset($_POST['OK_btn_CreateFormPopup_Editbarn']))
 		{
-			var_dump($_POST);
-			/*
-				$params=['name'=>'John', 'surname'=>'Doe', 'age'=>36)
-				$defaults = array(
-				CURLOPT_URL => 'http://myremoteservice/', 
-				CURLOPT_POST => true,
-				CURLOPT_POSTFIELDS => $params,
-				);
-				$ch = curl_init();
-				curl_setopt_array($ch, ($options + $defaults));
-
-			*/
+			$params=['opt'=>2,
+						'title'=>$_POST['barn_title'],
+						'location'=>$_POST['barn_location'],
+						'poc'=>$_POST['barn_poc'],
+						'phone'=>$_POST['barn_phone'],
+						'address'=>$_POST['barn_address'],
+						'amenities'=>json_encode($_POST['ameni'])];
+			$post_url = $URL."/barn/".$_POST['Addbarn_IdValue'];
+			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
+			
+				
 		}
 	?>
 	 <?php require_once('navbar_include.php'); ?>
@@ -63,6 +65,7 @@
 										<th>Phone</th>
 										<th>POC</th>
 										<th>Address</th>
+										<th>Amenities</th>
 										<th></th>
 										</tr>
 									</table>
@@ -133,15 +136,13 @@
 		</div>";
 		
 		
-		CreateFormPopup("Addbarn","Add new barn",$Html,'Addbarn',"/barn/");
+		CreateFormPopup("Addbarn","Add new barn",$Html,'Addbarn',"?page=".$Page);
 		?>
 	</body>
 	<?php 
 	
 		require_once('javascript_include.php'); 
-		include_once('Cls_CommonFunction.php');
-		$Obj_Commonfunction=new CommonFunctions();
-		$URL=$Obj_Commonfunction->config("APIURL");
+		
 	?>
 	<script>
 		$(document).ready(function()
@@ -156,7 +157,7 @@
 									});
 			posting.done(function(data)
 			{
-				clog(data)
+				//clog(data)
 				if (data.statusCode!=200)
 				{
 					$('.container').append("<span class='alert alert-danger'>"+data.message+"</span>");
@@ -171,11 +172,17 @@
 					}else
 					{
 							
-							Str="";
+							Str=""
+							if(data.data[0].data.length<=0)
+							{
+								$('#barntbl').append("<tr><td>No records</td></tr>");
+							}
+							//console.log("This is the length:"+data.data[0].data.length);
 							for(i=0;i<data.data[0].data.length;i++)
 							{
 								
 								JData=data.data[0].data[i];
+								
 								Str+="<tr id='TR_"+i+"'>";
 								Str+="<td>"+(i+1)+"</td>";
 								Str+="<td>"+JData.title+"</td>";
@@ -183,14 +190,16 @@
 								Str+="<td>"+JData.phone+"</td>";
 								Str+="<td>"+JData.poc+"</td>";
 								Str+="<td>"+JData.address+"</td>";
-								
+								Str+="<td>"+GetAmenities(JData.amenities)+"</td>";
+								//console.log(JData.amenities+" "+JData.title+" "+i)
 								Str+="<td><a href='#' data-toggle='modal' data-target='#Addbarn' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
 								Str+="<a href='#'>Delete</a></td></tr>";
 							}
-							Str+="<tr><td colspan=8 id='barntblPaginate'></td></tr>";
+							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";
 							$('#barntbl').append(Str);
-							Str=Paginate(data.data[0].totalrecords,<?php echo $Page; ?>)	
-							$('#barntblPaginate').append(Str);
+							
+							Str=pagination	(<?php echo $Page; ?>,data.data[0].totalrecords)	
+							$('#tblPaginate').append(Str);
 					}
 				}
 			});	
@@ -206,7 +215,7 @@
 										headers: {'Authcode':<?php echo "'".$USERID."'";?>},
 									});
 			posting.done(function(J) {
-				clog(J.data.title)
+				//clog(J)
 			$('#barn_title').val(J.data.title);
 			$('#barn_address').val(J.data.address);
 			$('#barn_phone').val(J.data.phone);
@@ -218,28 +227,29 @@
 										url: "<?php echo $URL; ?>/commonlist/amenities",
 										<?php if(isset($_SESSION['USERID'])){$USERID=$_SESSION['USERID'];}else{$USERID="";} 	?>
 										headers: {'Authcode':<?php echo "'".$USERID."'";?>},
+										data:{'opt':'combo'}
 									});
 			posting.done(function(Amen) {
+				clog(Amen.data)
 				Str1="<ul>";
 				for(k=0;k<Amen.data.length;k++)
 				{
+					
 					Id=Amen.data[k].title.replace(" ","_")
-					Str1+="<li class='list'><input type='checkbox' value='"+Amen.data[k].id+"' id='"+Id+"'>"+Amen.data[k].title+"</li>";
+					Str1+="<li class='list'><input type='checkbox' name=ameni[] value='"+Amen.data[k].id+"' id='"+Id+"'>"+Amen.data[k].title+"</li>";
 				}
 				Str1+="</ul>";
 				
 				$('#aminites').html(Str1)
+				clog(J.data.amenities)
 				for(k=0;k<J.data.amenities.length;k++)
 				{
 					IDr='#'+J.data.amenities[k].title.replace(" ","_")
 					$(IDr).attr("checked","checked");
 				}
 			});
-			
-			$('#FRM_Addbarn').attr("action", "<?php echo $URL; ?>/barn/"+Id); //Changing action for attaching different ID to the URL
 			$('#Addbarn_IdValue').val(Id);
 			$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Editbarn');
-			
 		});
 	}	
 

@@ -68,33 +68,33 @@
 			  <span class="label label-primary">new msz</span> </a>
 			<ul class="collapse nav submenu1" id="type">
 				<li>
-					<a id="panel61" href="javascript:;" data-toggle="collapse" data-target="#aminites"><i class="fa fa-university" ></i> 
+					<a id="panel61" href="amenitiesT.php" data-toggle="collapse" data-target="#aminites"><i class="fa fa-university" ></i> 
 					Aminities</a>
 						
 				</li>
 			  
 				<li>
-					<a id="panel62" href="javascript:;" data-toggle="collapse" data-target="#booking"><i class="fa fa-ticket" ></i> 
+					<a id="panel62" href="bookingT.php" data-toggle="collapse" data-target="#booking"><i class="fa fa-ticket" ></i> 
 					Booking</a>
 					
 				</li>
 				<li>
-					<a id="panel63" href="javascript:;" data-toggle="collapse" data-target="#tag"><i class="fa fa-tags" ></i> 
+					<a id="panel63" href="tagsT.php" data-toggle="collapse" data-target="#tag"><i class="fa fa-tags" ></i> 
 					Tags</a>
 						
 				</li>
 				<li>
-					<a id="panel64" href="javascript:;" data-toggle="collapse" data-target="#event"><i class="fa fa-snowflake-o" ></i> 
+					<a id="panel64" href="eventT.php" data-toggle="collapse" data-target="#event"><i class="fa fa-snowflake-o" ></i> 
 					Event</a>
 						
 				</li>
 				<li>
-					<a id="panel65" href="javascript:;" data-toggle="collapse" data-target="#organiser"><i class="fa fa-user-secret" ></i> 
+					<a id="panel65" href="organiserT.php" data-toggle="collapse" data-target="#organiser"><i class="fa fa-user-secret" ></i> 
 					Organiser</a>
 						
 				</li>
 				<li>
-					<a id="panel66" href="javascript:;" data-toggle="collapse" data-target="#course"><i class="fa fa-graduation-cap " ></i> 
+					<a id="panel66" href="courseT.php" data-toggle="collapse" data-target="#course"><i class="fa fa-graduation-cap " ></i> 
 					Course</a>
 						
 				</li>

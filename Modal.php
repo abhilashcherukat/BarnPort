@@ -60,7 +60,7 @@ $Str="
 </div><!-- /.modal -->";
 echo $Str;
 }
-function CreateFormPopup($ModalId,$Title,$Html,$Id='',$SubmitTag='')
+function CreateFormPopup($ModalId,$Title,$Html,$Id='',$SubmitTag='',$SomeAdditions='')
 {
 
 	$Str="
@@ -72,7 +72,7 @@ function CreateFormPopup($ModalId,$Title,$Html,$Id='',$SubmitTag='')
 			</div>
 			<div class='modal-body'>
 				<div class='panel-body'>
-					<form action='".$_SERVER['PHP_SELF'].$SubmitTag."' method='post' id='FRM_$ModalId'>
+					<form action='".$_SERVER['PHP_SELF'].$SubmitTag."' method='post' id='FRM_$ModalId' $SomeAdditions>
 						<div class='row'>
 							<div class='col-xs-6 col-sm-6 col-md-12'>
 								<input type='hidden' id='".$ModalId."_IdValue' value='".$Id."' name='".$ModalId."_IdValue' >

@@ -37,6 +37,7 @@
      
     });
 	function clog(data){console.log(data);}
+	
 	function setSession(key, value)
 	{
 		DtArr=[];
@@ -49,30 +50,60 @@
 			console.log(data);
 		});
 	}
-		function Paginate(totalrecord,currentpage)
+	function pagination(currentPage, totalRecs) {
+		var delta = 2,
+		recordperpage=5,    
+		range = [],
+		rangeWithDots = [],
+		l;
+		var nrOfPages=Math.ceil(totalRecs/recordperpage);
+		range.push(1);  
+
+		if (nrOfPages <= 1){
+			return "<a href='?page=1'>1</a>";
+		}
+
+		for (let i = currentPage - delta; i <= currentPage + delta; i++) {
+			if (i < nrOfPages && i > 1) {
+				range.push(i);
+			}
+		}  
+		range.push(nrOfPages);
+		
+		for (let i of range) {
+			if (l) {
+				if (i - l === 2) {
+					rangeWithDots.push("<a href='?page="+(l + 1)+"'>"+(l + 1)+"</a>");
+				} else if (i - l !== 1) {
+					rangeWithDots.push('...');
+				}
+		}
+			if(i==currentPage)
+			{
+					rangeWithDots.push("<a class='badge' href='?page="+i+"'>"+i+"</a>");
+			}else
+			{
+				rangeWithDots.push("<a href='?page="+i+"'>"+i+"</a>");
+			}
+			l = i;
+		}
+		//console.log(rangeWithDots)
+		return rangeWithDots;
+	}
+	function GetAmenities(Amenities)
 	{
-		var recordperpage=2;
-		var totalpages=Math.ceil(totalrecord/recordperpage);
 		
-		Str="<nav aria-label='Page navigation' id='div1'>"
-		Str+="<ul class='pager'>"
-		Str+="    <li>"
-		Str+="	<a href='?page=1' aria-label='First'>"
-		Str+="	  <span aria-hidden='true'>«</span>"
-		Str+="	</a>"
-		Str+="    </li>"
-		for(i=1;i<=totalpages;i++)  
-		  Str+="<li><a href='?page="+i+"'>"+i+"</a></li>"
-		  
-		Str+="    <li>"
-		Str+="	<a href='?page="+totalrecord+"' aria-label='Last'>"
-		Str+="	  <span aria-hidden='true'>»</span>"
-		Str+="	</a>"
-		Str+="    </li>"
-		Str+="  </ul>"
-		Str+="</nav>"
+		Str="<table>";
+		Str+="<tr>";
+		len=Amenities.length
+		for(io=0;io<len;io++)
+		{
+			Str+="<td class='badge' style='margin:2px;'><img style='width:25px;height:25px;' src='images/amenities/"+Amenities[io].icon+"'></td>";
+		}
+		Str+="</tr>";
+		Str+="</table>";
 		return Str;
-		
 	}
 	$('#loading-image').bind('ajaxStart', function(){clog("showing");$(this).show();}).bind('ajaxStop', function(){clog("hiding");$(this).hide();});
+  
   </script>	

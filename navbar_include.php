@@ -1,6 +1,4 @@
 <?php
-session_start();
-ini_set('session.gc_maxlifetime',1);
 if(isset($_SESSION['USERNAME'])){$Username=$_SESSION['USERNAME'];}else{$Username="";header("location:logout.php");}
 ?>
 <nav class="navbar navbar-inverse top-bar navbar-fixed-top">
