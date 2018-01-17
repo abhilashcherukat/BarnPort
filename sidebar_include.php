@@ -27,7 +27,7 @@
 				Floor</a>
 			</li>
 			<li>
-				<a id="panel44" href="javascript:;" data-toggle="collapse" data-target="#table"><i class="" ></i> 
+				<a id="panel44" href="tables.php" data-toggle="collapse" data-target="#table"><i class="" ></i> 
 				Table</a>
 					
 			</li>

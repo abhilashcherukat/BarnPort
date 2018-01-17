@@ -54,7 +54,7 @@
 								<img src='images/loader.gif' id='loading-image'>
 							</div>
 							<div class="row padding-top">
-								<div class='btn btn-success circle' id='btn_addbarn'>Add new</div>
+								<div class='btn btn-success circle' id='btn_addbarn' ><a href='#' data-toggle='modal' data-target='#Editbarn' data-original-title>Add new</a></div>
 								<div class="col-md-12" id='container'>
 									
 									<table class='table' id='barntbl'>
@@ -78,65 +78,122 @@
 		</div>
 		<?php require_once('Modal.php'); 
 			CreateConfirmModal("Delete barn","Are you sure you want to delete <b id='currentObject'>this</b>?");
-		$Html="<div class='row'>
-						<div class='col-xs-6 col-sm-6 col-md-1'>
-						Name
-						</div>
-						<input type='hidden' name='opt'  id='opt' class='form-control input-sm' required value=1>
+			$Str=$Obj_Commonfunction->GetData("LIST","commonlist/amenities?opt=combo");
+			echo $Str;
+		$Html="<input type='hidden' name='opt'  id='opt' class='form-control input-sm' required value=1>
+					<div class='row'>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Name</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
 									<input type='text' name='barn_title'  id='barn_title' class='form-control input-sm' required>
 							</div>
 						</div>
 						<div class='col-xs-6 col-sm-6 col-md-1'>
-						City
+							City
 						</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
 									<input type='text' name='barn_location' id='barn_location' class='form-control input-sm' >
 							</div>
 						</div>
-			</div>
-			<div class='row'>
-						<div class='col-xs-6 col-sm-6 col-md-1'>
-						Contact Person
-						</div>
+					</div>
+					
+					<div class='row'>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Contact Person</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
 									<input type='text' name='barn_poc'  id='barn_poc' class='form-control input-sm' required>
 							</div>
 						</div>
 						<div class='col-xs-6 col-sm-6 col-md-1'>
-						Phone
+							Phone
 						</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
 									<input type='text' name='barn_phone' id='barn_phone' class='form-control input-sm' >
 							</div>
 						</div>
-			</div>
-			<div class='row'>
-			<div class='col-xs-6 col-sm-6 col-md-12'>
-			Address
-			</div>
-			<div class='col-xs-6 col-sm-6 col-md-12'>
-				<div class='form-group'>
-						<input type='text' name='barn_address' id='barn_address' class='form-control input-sm' >
-				</div>
-			</div>
-			
-			
-			<div class='col-xs-6 col-sm-6 col-md-12'>
-			Amenities
-			</div>
-			<div class='col-xs-6 col-sm-6 col-md-12' id='aminites'>
-				
-			</div>
-			
-		</div>";
+					</div>
+					<div class='row'>
+						<div class='col-xs-6 col-sm-6 col-md-12'>
+							Address
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-12'>
+							<div class='form-group'>
+								<input type='text' name='barn_address' id='barn_address' class='form-control input-sm' >
+							</div>
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-12'>
+							Amenities
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-12' id='aminites'>
+					</div>
+				</div>";
+		
+		$Html="<input type='hidden' name='opt'  id='opt' class='form-control input-sm' required value=2>
+					<div class='row'>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Name</div>
+						<div class='col-xs-6 col-sm-6 col-md-3'>
+							<div class='form-group'>
+									<input type='text' name='barn_title'  id='barn_title' class='form-control input-sm' required>
+							</div>
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-1'>
+							City
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-3'>
+							<div class='form-group'>
+									<input type='text' name='barn_location' id='barn_location' class='form-control input-sm' >
+							</div>
+						</div>
+					</div>
+					
+					<div class='row'>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Contact Person</div>
+						<div class='col-xs-6 col-sm-6 col-md-3'>
+							<div class='form-group'>
+									<input type='text' name='barn_poc'  id='barn_poc' class='form-control input-sm' required>
+							</div>
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-1'>
+							Phone
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-3'>
+							<div class='form-group'>
+									<input type='text' name='barn_phone' id='barn_phone' class='form-control input-sm' >
+							</div>
+						</div>
+					</div>
+					<div class='row'>
+						<div class='col-xs-6 col-sm-6 col-md-4'>
+							<input type='checkbox' name='isFloorexist'>Is there a floor in the barn?
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-4'>
+							<input type='checkbox' name='isExhibitexist'>Is there a exhibision space in the barn?
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-4'>
+							How many classrooms?<input type='number' value=1 name='classrooms'>
+						</div>
+								
+					</div>
+					<div class='row'>
+						<div class='col-xs-6 col-sm-6 col-md-12'>
+							Address
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-12'>
+							<div class='form-group'>
+								<input type='text' name='barn_address' id='barn_address' class='form-control input-sm' >
+							</div>
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-12'>
+							Amenities
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-12' id='aminites'>".$Str."
+					</div>
+				</div>";
 		
 		
-		CreateFormPopup("Addbarn","Add new barn",$Html,'Addbarn',"?page=".$Page);
+		CreateFormPopup("Editbarn","Edit barn",$Html,'Editbarn',"?page=".$Page);
 		?>
 	</body>
 	<?php 
@@ -192,7 +249,7 @@
 								Str+="<td>"+JData.address+"</td>";
 								Str+="<td>"+GetAmenities(JData.amenities)+"</td>";
 								//console.log(JData.amenities+" "+JData.title+" "+i)
-								Str+="<td><a href='#' data-toggle='modal' data-target='#Addbarn' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
+								Str+="<td><a href='#' data-toggle='modal' data-target='#Editbarn' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
 								Str+="<a href='#'>Delete</a></td></tr>";
 							}
 							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";
@@ -248,7 +305,7 @@
 					$(IDr).attr("checked","checked");
 				}
 			});
-			$('#Addbarn_IdValue').val(Id);
+			$('#Editbarn_IdValue').val(Id);
 			$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Editbarn');
 		});
 	}	

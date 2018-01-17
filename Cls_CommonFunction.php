@@ -3,8 +3,7 @@
 class CommonFunctions
 {
 	var $APIURL;
-	function config($opt)
-	{
+	function config($opt){
 		switch($opt)
 		{
 			case "APIURL":
@@ -54,35 +53,78 @@ class CommonFunctions
 	}	
 	function SendMail($Content=""){
 		echo "Mailed ".$Content."<br>";
-		
-	 }
+	}
 	function SendSMS($To,$Text){
 		echo "Texted".$To." ".$Text;
-	 }
+	}
 	 
 	function CreateOTP($count=4){
 		 $otp_code = strtoupper(bin2hex(openssl_random_pseudo_bytes($count)));
 		 return  $otp_code." ";
-		
-	 }
+	}
 	 
 
 	function CurlSendPostRequest($url,$request){
        
-        $ch = curl_init($url);
-       curl_setopt($ch, CURLOPT_POST, 1);
-       curl_setopt($ch, CURLOPT_HTTPHEADER,array("Authcode:".$_SESSION['USERID']));
-	 curl_setopt($ch, CURLOPT_POSTFIELDS,$request);
-	 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-        $data = curl_exec($ch);
-        $curl_errno = curl_errno($ch);
-        $curl_error = curl_error($ch);
-	//echo "<script> console.log('ErrNo:".$curl_errno."')</script>";
-	//echo "<script> console.log('Err:".$curl_error."')</script>";
-        curl_close($ch);
-        return $data;
-    }
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,array("Authcode:".$_SESSION['USERID']));
+		curl_setopt($ch, CURLOPT_POSTFIELDS,$request);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+		$data = curl_exec($ch);
+		$curl_errno = curl_errno($ch);
+		$curl_error = curl_error($ch);
+		//echo "<script> console.log('ErrNo:".$curl_errno."')</script>";
+		//echo "<script> console.log('Err:".$curl_error."')</script>";
+		curl_close($ch);
+		return $data;
+	}
+	function CurlSendGetRequest($url,$request){
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+		curl_setopt($ch, CURLOPT_HTTPHEADER,array("Authcode:".$_SESSION['USERID']));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+		$data = curl_exec($ch);
+		$curl_errno = curl_errno($ch);
+		$curl_error = curl_error($ch);
+		echo "<script> console.log('ErrNo:".$curl_errno."')</script>";
+		echo "<script> console.log('Err:".$curl_error."')</script>";
+		curl_close($ch);
+		return $data;
+	}
 	
+	function GetData($opt,$what)
+	{
+		$URL=$this->config('APIURL')."/".$what;
+		$Barns=$this->CurlSendGetRequest($URL,"");
+		$Barns=json_decode($Barns);
+		var_dump($Barns);
+		
+		$Str="";
+		switch($opt)
+		{
+			case "COMBO":
+				foreach($Barns->data as $Barn)
+				{
+					$Str.="<option value=".$Barn->ID.">".$Barn->title."</option>";
+				}
+				return $Str;
+			break;
+			case "LIST":
+				foreach($Barns->data as $Barn)
+				{
+					$Str.="<li><input type='checkbox' value=".$Barn->ID.">".$Barn->title."</li>";
+				}
+				return $Str;
+			break;
+		}
+		
+	}
+	function GetCurrentChairStatus($Chairs)
+	{
+		
+	}
+
 }
 
 ?>
