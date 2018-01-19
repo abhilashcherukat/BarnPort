@@ -93,28 +93,33 @@ class CommonFunctions
 		return $data;
 	}
 	
-	function GetData($opt,$what)
+	function GetData($opt,$what,$name=false)
 	{
 		$URL=$this->config('APIURL')."/".$what;
 		$Barns=$this->CurlSendGetRequest($URL,"");
+		//echo $Barns;
 		$Barns=json_decode($Barns);
-		var_dump($Barns);
+		
 		
 		$Str="";
 		switch($opt)
 		{
 			case "COMBO":
-				foreach($Barns->data as $Barn)
-				{
-					$Str.="<option value=".$Barn->ID.">".$Barn->title."</option>";
+				foreach($Barns->data as $Barn) { 
+					
+					//echo json_encode($Barn)."<br><br><br>";
+					if($name)
+					{
+						$Str.="<option value=".$Barn->id.">".$Barn->name."</option>"; 
+					}else
+					{
+						$Str.="<option value=".$Barn->id.">".$Barn->title."</option>"; 
+					}
 				}
 				return $Str;
 			break;
 			case "LIST":
-				foreach($Barns->data as $Barn)
-				{
-					$Str.="<li><input type='checkbox' value=".$Barn->ID.">".$Barn->title."</li>";
-				}
+				foreach($Barns->data as $Barn) {  $Str.="<li><input type='checkbox' value=".$Barn->id." name='ameni[]'>".$Barn->title."</li>"; }
 				return $Str;
 			break;
 		}

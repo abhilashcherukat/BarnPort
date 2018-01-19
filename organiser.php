@@ -7,75 +7,85 @@
 	if(isset($_GET['page']) && $_GET['page']>0){$Page=$_GET['page'];}else{$Page=1;}
 	?>
 	<head>
-		<?php require_once('head_include.php'); ?>
+		<?php 
+			require_once('head_include.php'); 
+		?>
 	</head>
 	<body>
 	<?php
-		if(isset($_POST['OK_btn_CreateFormPopup_AddAmenitiesType']))
+		
+		if(isset($_POST['OK_btn_CreateFormPopup_Addorganiser']))
 		{
 			
-			$params=['opt'=>'1','title'=>$_POST['AmenitiesType_title'],'id'=>$_POST['AddAmenitiesType_IdValue']];
-			
-			
-			if (empty($_FILES['AmenitiesType_icon']['name'])) 
+			$params=['opt'=>'1',
+			'name'=>$_POST['organiser_name'],
+			'type'=>$_POST['organiser_type'],
+			'description'=>$_POST['organiser_desc'],
+			'id'=>$_POST['Addorganiser_IdValue']];
+			$post_url = $URL."/organiser/";
+			var_dump($_FILES);
+			echo "<script>console.log('IMAGE:".empty($_FILES['organiser_img']['name']).":".$_FILES['organiser_img']['name']."')</script>";
+			if (empty($_FILES['organiser_img']['name'])!=1) 
 			{
-				//echo "HItting here";
-				$FileName=$_FILES["AmenitiesType_icon"]["name"];
-				$file_tmp= $_FILES["AmenitiesType_icon"]['tmp_name'];
-				//$file_ext = strtolower( end(explode('.',$FileName)));
+				$FileName=$_FILES["organiser_img"]["name"];
+				$file_tmp= $_FILES["organiser_img"]['tmp_name'];
 				$type = pathinfo($file_tmp, PATHINFO_EXTENSION);
 				$data = file_get_contents($file_tmp);
-				$base64 = base64_encode($data);//'data:image/' . $type . ';base64,' .
+				$base64 = base64_encode($data);
 				$Array=array("name"=>$FileName,"content"=>$base64);
-				$params['icon']=json_encode($Array);
+				$params['image']=json_encode($Array);
 			}else
 			{
 				$Array=array("name"=>"","content"=>"");
-				$params['icon']=json_encode($Array);
+				$params['image']=json_encode($Array);
 			}
-			//echo "<br><br><br><div class='pull-right'>".$params['icon']."</div>";
-			$post_url = $URL."/commonlist/amenities";
+		
 			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
-			
-				
 		}
-		if(isset($_POST['OK_btn_CreateFormPopup_EditAmenitiesType']))
+		if(isset($_POST['OK_btn_CreateFormPopup_Editorganiser']))
 		{
+			$params=['opt'=>'2',
+			'name'=>$_POST['organiser_name'],
+			'type'=>$_POST['organiser_type'],
+			'description'=>$_POST['organiser_desc'],
+			'id'=>$_POST['Addorganiser_IdValue']];
+			$post_url = $URL."/organiser/";
 			
-			$params=['opt'=>'2','title'=>$_POST['AmenitiesType_title'],'id'=>$_POST['AddAmenitiesType_IdValue']];
-			
-			
-			if(isset($_FILES['AmenitiesType_icon']))
+			if (!empty($_FILES['organiser_img']['name'])) 
 			{
-				$FileName=$_FILES["AmenitiesType_icon"]["name"];
-				$file_tmp= $_FILES["AmenitiesType_icon"]['tmp_name'];
-				//$file_ext = strtolower( end(explode('.',$FileName)));
+				$FileName=$_FILES["organiser_img"]["name"];
+				$file_tmp= $_FILES["organiser_img"]['tmp_name'];
 				$type = pathinfo($file_tmp, PATHINFO_EXTENSION);
 				$data = file_get_contents($file_tmp);
-				$base64 =base64_encode($data);// 'data:image/' . $type . ';base64,' .
+				$base64 = base64_encode($data);
 				$Array=array("name"=>$FileName,"content"=>$base64);
-				$params['icon']=json_encode($Array);
+				$params['image']=json_encode($Array);
+			}else
+			{
+				$Array=array("name"=>"","content"=>"");
+				$params['image']=json_encode($Array);
 			}
-			//echo "<br><br><br><div class='pull-right'>".$params['icon']."</div>";
-			$post_url = $URL."/commonlist/amenities";
 			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
 		}
+	
+		
 	?>
-	 <?php require_once('navbar_include.php'); ?>
+	 <?php require_once('navbar_include.php');
+	 ?>
 		<div class="wrapper" id="wrapper">
 			<div class="left-container" id="left-container">
 			<!-- begin SIDE NAV USER PANEL -->
-				<?php require_once('sidebar_include.php'); ?>
+				<?php require_once('sidebar_include.php'); 
+				?>
 			<!-- END SIDE NAV USER PANEL -->
 			</div>
 			<div class="right-container" id="right-container">
-				
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-4">
 							<ul class="breadcrumb">
 								<li><i class="fa fa-home"></i><a href="/"> Home</a></li>
-								<li class="active">AmenitiesType</li>
+								<li class="active">organiser</li>
 							</ul>
 						</div>
 						<div class="col-md-8">
@@ -85,12 +95,12 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="main-header">
-								<h2>AmenitiesType</h2>
+								<h2>Organiser</h2>
 								<em>the first priority information</em>
 								<img src='images/loader.gif' id='loading-image'>
 							</div>
 							<div class="row padding-top">
-								<div class='btn btn-success circle' id='btn_addAmenitiesType' data-toggle='modal' data-target='#AddAmenitiesType' data-original-title onclick='Addnew()' >Add new</div>
+								<div class='btn btn-success circle' id='btn_addorganiser' data-toggle='modal' data-target='#Addorganiser' data-original-title onclick='Addnew()' >Add new</div>
 								<div class="col-md-12" id='container'>
 									<?php
 										if(isset($post_response))
@@ -105,13 +115,17 @@
 										}
 									
 									?>
-									<table class='table' id='AmenitiesTypetbl'>
+									<table class='table' id='organisertbl'>
 										<tr>
 										<th>#</th>
-										<th>Title</th>
+										<th>Name</th>
+										<th>Image</th>
+										<th>Description</th>
+										<th>Type</th>
+										<th>Events</th>
 										<th></th>
 										</tr>
-									</table>
+									</organiser>
 								</div>
 							</div>
 						</div>
@@ -120,31 +134,50 @@
 			</div>
 		</div>
 		<?php require_once('Modal.php'); 
-			CreateConfirmModal("Delete AmenitiesType","Are you sure you want to delete <b id='currentObject'>this</b>?");
+			CreateConfirmModal("Add a chair","Are you sure you want to add a chair  to this</b>?");
 			
-			$Html="  <div class='row'>
-						<div class='col-xs-6 col-sm-6 col-md-1'>
-							Title
-						</div>
+			$Str=$Obj_Commonfunction->GetData("COMBO","commonlist/organiser?opt=combo");
+			
+		$Html="<input type='hidden' name='opt'  id='opt' class='form-control input-sm' required value=1>
+					<div class='row'>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Name</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-								<input type='text' name='AmenitiesType_title'  id='AmenitiesType_title' class='form-control input-sm' required>
+									<input type='text' name='organiser_name'  id='organiser_name' class='form-control input-sm' required>
 							</div>
 						</div>
 						<div class='col-xs-6 col-sm-6 col-md-1'>
-							Icon File
+							Type
 						</div>
-							<input type='hidden' name='opt'  id='opt' class='form-control input-sm' required value=1>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-								<input type='file' name='AmenitiesType_icon'  id='AmenitiesType_icon' class='form-control input-sm'>
+									<select name='organiser_type' id='organiser_type' class='form-control input-sm' >
+									".$Str."
+									</select>
 							</div>
 						</div>
-					</div>";
-		
-		
-			CreateFormPopup("AddAmenitiesType","Add new AmenitiesType",$Html,'AddAmenitiesType',"?page=".$Page,"enctype= multipart/form-data");
-		?>
+					</div>
+					
+					<div class='row'>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Description</div>
+						<div class='col-xs-6 col-sm-6 col-md-3'>
+							<div class='form-group'>
+									<input type='text' name='organiser_desc'  id='organiser_desc' class='form-control input-sm' required>
+							</div>
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-1'>
+							Logo
+						</div>
+						<div class='col-xs-6 col-sm-6 col-md-3'>
+							<div class='form-group'>
+									<input type='file' name='organiser_img' id='organiser_img' class='form-control input-sm' >
+							</div>
+						</div>
+					</div>
+					
+				</div>";
+			CreateFormPopup("Addorganiser","Add organiser",$Html,'Addorganiser',"?page=".$Page,"enctype= multipart/form-data");
+			?>
 	</body>
 	<?php 
 	
@@ -157,7 +190,7 @@
 				
 			var posting=$.ajax({ 	
 										type: "GET",
-										url: "<?php echo $URL; ?>/commonlist/amenities",
+										url: "<?php echo $URL; ?>/organiser/",
 										<?php if(isset($_SESSION['USERID'])){$USERID=$_SESSION['USERID'];}else{$USERID="";} 	?>
 										headers: {'Authcode':<?php echo "'".$USERID."'";?>},
 										data:{'page':<?php echo $Page; ?>}
@@ -182,24 +215,28 @@
 							Str=""
 							if(data.data[0].data.length<=0)
 							{
-								$('#AmenitiesTypetbl').append("<tr><td>No records</td></tr>");
+								$('#organisertbl').append("<tr><td>No records</td></tr>");
 							}
 							//console.log("This is the length:"+data.data[0].data.length);
 							for(i=0;i<data.data[0].data.length;i++)
 							{
 								
 								JData=data.data[0].data[i];
-								
 								Str+="<tr id='TR_"+i+"'>";
 								Str+="<td>"+(i+1)+"</td>";
-								Str+="<td>"+JData.title+"</td>";
-								Str+="<td><img style='width:25px;height:25px;' src='"+JData.icon+"'></td>";
+								Str+="<td>"+JData.name+"</td>";
+								Str+="<td><img style='width:50px;height:50px;' src="+JData.image+"></td>";
+								Str+="<td>"+JData.description+"</td>";
 								
-								Str+="<td><a href='#' data-toggle='modal' data-target='#AddAmenitiesType' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
-								Str+=" | <a href='#'>Delete</a></td></tr>";
+								Str+="<td>"+JData.type.title+"</td>";
+								
+								
+								
+								Str+="<td><a href='#' data-toggle='modal' data-target='#Addorganiser' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
+								Str+=" | <a href='#'>Delete</a> </td></tr>";
 							}
 							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";
-							$('#AmenitiesTypetbl').append(Str);
+							$('#organisertbl').append(Str);
 							
 							Str=pagination	(<?php echo $Page; ?>,data.data[0].totalrecords)	
 							$('#tblPaginate').append(Str);
@@ -209,27 +246,32 @@
 		});
 	function Addnew()
 	{
-		$('#TIT_AddAmenitiesType').html("Add");
-		$('#AmenitiesType_title').val("");
-		$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_AddAmenitiesType');
+		$('#TIT_Addorganiser').html("Add");
+		$('#organiser_title').val("");
+		$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Addorganiser');
 	}
 	function Editthis(Id)
 	{
-		$('#TIT_AddAmenitiesType').html("Edit");
+		$('#TIT_Addorganiser').html("Edit");
 		var posting=$.ajax({ 	
 										type: "GET",
-										url: "<?php echo $URL; ?>/commonlist/amenities",
+										url: "<?php echo $URL; ?>/organiser/"+Id,
 										<?php if(isset($_SESSION['USERID'])){$USERID=$_SESSION['USERID'];}else{$USERID="";} 	?>
 										headers: {'Authcode':<?php echo "'".$USERID."'";?>},
 										data:{"id":Id}
 									});
 			posting.done(function(J) {
-				clog(J)
-			$('#AmenitiesType_title').val(J.data.title);
+				clog(JSON.stringify(J))
+			$('#organiser_name').val(J.data.name);
+			$('#organiser_desc').val(J.data.description);
+			$('#organiser_type').val(J.data.type.id).attr("selected", "selected");
 			$('#opt').val(2);
-			$('#AddAmenitiesType_IdValue').val(Id);
-			$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_EditAmenitiesType');
-		});
+			$('#Addorganiser_IdValue').val(Id);
+			$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Editorganiser');
+			});
+			posting.error(function(J) {
+				console.log(J);
+			})
 	}	
 	
 	function Deletethis(Id,Title)

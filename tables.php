@@ -7,7 +7,9 @@
 	if(isset($_GET['page']) && $_GET['page']>0){$Page=$_GET['page'];}else{$Page=1;}
 	?>
 	<head>
-		<?php require_once('head_include.php'); ?>
+		<?php 
+			require_once('head_include.php'); 
+		?>
 	</head>
 	<body>
 	<?php
@@ -32,11 +34,13 @@
 			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
 		}
 	?>
-	 <?php require_once('navbar_include.php'); ?>
+	 <?php require_once('navbar_include.php');
+	 ?>
 		<div class="wrapper" id="wrapper">
 			<div class="left-container" id="left-container">
 			<!-- begin SIDE NAV USER PANEL -->
-				<?php require_once('sidebar_include.php'); ?>
+				<?php require_once('sidebar_include.php'); 
+				?>
 			<!-- END SIDE NAV USER PANEL -->
 			</div>
 			<div class="right-container" id="right-container">
@@ -100,7 +104,7 @@
 						</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-								".$Obj_Commonfunction->GetBarn("COMBO")."<input type='text' name='table_title'  id='table_title' class='form-control input-sm' required>
+								".$Obj_Commonfunction->GetData("COMBO","barn/?opt=combo")."<input type='text' name='table_title'  id='table_title' class='form-control input-sm' required>
 							</div>
 						</div>
 						
@@ -160,8 +164,8 @@
 								
 								Str+="<td>"+JData.chair[0].totalrecords+"</td>";
 								
-								Str+="<td><a href='#' data-toggle='modal' data-target='#Addtable' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
-								Str+=" | <a href='#'>Delete</a> | ";
+								Str+="<td><!--a href='#' data-toggle='modal' data-target='#Addtable' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
+								Str+=" | --><a href='#'>Delete</a> | ";
 								Str+="<a href='#' data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Add Chair</a></td></tr>";
 							}
 							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";

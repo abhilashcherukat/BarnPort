@@ -51,44 +51,50 @@
 		});
 	}
 	function pagination(currentPage, totalRecs) {
-		var delta = 2,
-		recordperpage=5,    
-		range = [],
-		rangeWithDots = [],
-		l;
-		var nrOfPages=Math.ceil(totalRecs/recordperpage);
-		range.push(1);  
+		if(totalRecs>0)
+		{
+			var delta = 2,
+			recordperpage=5,    
+			range = [],
+			rangeWithDots = [],
+			l;
+			var nrOfPages=Math.ceil(totalRecs/recordperpage);
+			range.push(1);  
 
-		if (nrOfPages <= 1){
-			return "<a href='?page=1'>1</a>";
-		}
-
-		for (let i = currentPage - delta; i <= currentPage + delta; i++) {
-			if (i < nrOfPages && i > 1) {
-				range.push(i);
+			if (nrOfPages <= 1){
+				return "<a href='?page=1'>1</a>";
 			}
-		}  
-		range.push(nrOfPages);
-		
-		for (let i of range) {
-			if (l) {
-				if (i - l === 2) {
-					rangeWithDots.push("<a href='?page="+(l + 1)+"'>"+(l + 1)+"</a>");
-				} else if (i - l !== 1) {
-					rangeWithDots.push('...');
+
+			for (let i = currentPage - delta; i <= currentPage + delta; i++) {
+				if (i < nrOfPages && i > 1) {
+					range.push(i);
 				}
-		}
-			if(i==currentPage)
-			{
-					rangeWithDots.push("<a class='badge' href='?page="+i+"'>"+i+"</a>");
-			}else
-			{
-				rangeWithDots.push("<a href='?page="+i+"'>"+i+"</a>");
+			}  
+			range.push(nrOfPages);
+			
+			for (let i of range) {
+				if (l) {
+					if (i - l === 2) {
+						rangeWithDots.push("<a href='?page="+(l + 1)+"'>"+(l + 1)+"</a>");
+					} else if (i - l !== 1) {
+						rangeWithDots.push('...');
+					}
 			}
-			l = i;
+				if(i==currentPage)
+				{
+						rangeWithDots.push("<a class='badge' href='?page="+i+"'>"+i+"</a>");
+				}else
+				{
+					rangeWithDots.push("<a href='?page="+i+"'>"+i+"</a>");
+				}
+				l = i;
+			}
+			//console.log(rangeWithDots)
+			return rangeWithDots;
+		}else
+		{
+			return "";
 		}
-		//console.log(rangeWithDots)
-		return rangeWithDots;
 	}
 	function GetAmenities(Amenities)
 	{

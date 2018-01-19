@@ -43,7 +43,7 @@
             
           </li>
 		<li class="panel">
-            <a id="panel7" href="javascript:;" data-toggle="collapse" data-target="#events"> <i class="fa fa-snowflake-o"></i> Event
+            <a id="panel7" href="event.php" data-toggle="collapse" data-target="#events"> <i class="fa fa-snowflake-o"></i> Event
              
             </a>
             
@@ -51,7 +51,7 @@
 	    
 	    
 		<li class="panel">
-            <a id="panel9" href="javascript:;" data-toggle="collapse" data-target="#organisers"> <i class="fa fa-user-secret"></i> Organiser
+            <a id="panel9" href="organiser.php" data-toggle="collapse" data-target="#organisers"> <i class="fa fa-user-secret"></i> Organiser
             
             </a>
             
