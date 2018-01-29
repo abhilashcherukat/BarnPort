@@ -2,7 +2,13 @@
 <html lang="en">
 
 <head>
-	<?php require_once('head_include.php'); ?>
+	<?php 
+	
+		require_once('head_include.php'); 
+		include_once('Cls_CommonFunction.php');
+		$Obj_Commonfunction=new CommonFunctions();
+		$URL=$Obj_Commonfunction->config("APIURL");
+	?>
 </head>
 
 <body>
@@ -24,14 +30,21 @@
 						<li class="active">Dashboard</li>
 					</ul>
             </div>
+		<?php
+			$params=[];
+			$post_url = $URL."/counts";
+			//echo $post_url;
+			$post_response=json_decode($Obj_Commonfunction->CurlSendGetRequest($post_url,$params)) ;
+			//print_r($post_response);
+		?>
             <div class="col-md-8">
             <ul class="list-inline pull-right mini-stat">
 							<li>
-								<h5>USERS<span class="stat-value color-blue"><i class="fa fa-user-circle"></i> 81,450</span></h5>
+								<h5>USERS<span class="stat-value color-blue"><i class="fa fa-user-circle"></i> <?php echo $post_response->data->user; ?></span></h5>
 								
 							</li>
 							<li>
-								<h5>ORGANISERS <span class="stat-value color-green"><i class="fa fa-user-circle"></i> 150,743</span></h5>
+								<h5>ORGANISERS <span class="stat-value color-green"><i class="fa fa-user-circle"></i>  <?php echo $post_response->data->organiser; ?></span></h5>
 								
 							</li>
 							<!--li>

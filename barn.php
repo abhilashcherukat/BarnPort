@@ -32,7 +32,7 @@
 		}
 	if(isset($_POST['OK_btn_CreateFormPopup_Addbarn']))
 		{
-			var_dump($_POST);
+			//var_dump($_POST);
 			if(!isset($_POST['ameni']))
 			{
 				$Ameni=[];

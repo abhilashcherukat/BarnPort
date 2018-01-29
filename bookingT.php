@@ -156,7 +156,7 @@
 								Str+="<td>"+JData.title+"</td>";
 								
 								Str+="<td><a href='#' data-toggle='modal' data-target='#AddbookingType' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
-								Str+="<a data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Delete</a></td></tr>";
+								Str+=" | <a data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Delete</a></td></tr>";
 							}
 							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";
 							$('#bookingTypetbl').append(Str);

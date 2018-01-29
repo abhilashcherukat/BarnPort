@@ -120,7 +120,6 @@ class CommonFunctions
 		{
 			case "COMBO":
 				foreach($Barns->data as $Barn) { 
-					
 					//echo json_encode($Barn)."<br><br><br>";
 					if($name)
 					{

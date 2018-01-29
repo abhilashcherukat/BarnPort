@@ -183,8 +183,7 @@
 								
 								Str+="<td>"+JData.chair[0].totalrecords+"</td>";
 								
-								Str+="<td><!--a href='#' data-toggle='modal' data-target='#Addtable' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
-								Str+=" | --><a data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Delete</a>| ";
+								Str+="<td><a data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Delete</a> | ";
 								Str+="<a href='#' data-toggle='modal' data-target='#AddChair' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Add Chair</a></td></tr>";
 							}
 							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";

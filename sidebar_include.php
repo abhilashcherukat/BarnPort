@@ -16,15 +16,15 @@
 		Infrastructure  </a>
             <ul class="collapse nav submenu1" id="infra">
 			<li>
-				<a id="panel41" href="javascript:;" data-toggle="collapse" data-target="#classroom"><i class="fa fa-university" ></i> 
+				<a id="panel41" href="classroom.php" data-toggle="collapse" data-target="#classroom"><i class="fa fa-university" ></i> 
 				Classroom</a>
 			</li>
 			<li>
-				<a id="panel42" href="javascript:;" data-toggle="collapse" data-target="#exhibit"><i class="fa fa-lightbulb-o" ></i> 
+				<a id="panel42" href="exhibit.php" data-toggle="collapse" data-target="#exhibit"><i class="fa fa-lightbulb-o" ></i> 
 				Exhibit</a>
 			</li>
 			<li>
-				<a id="panel43" href="javascript:;" data-toggle="collapse" data-target="#floor"><i class="fa fa-lightbulb-o" ></i> 
+				<a id="panel43" href="floor.php" data-toggle="collapse" data-target="#floor"><i class="fa fa-lightbulb-o" ></i> 
 				Floor</a>
 			</li>
 			<li>
@@ -32,10 +32,10 @@
 				Table</a>
 					
 			</li>
-			<li>
+			<!--li>
 				<a id="panel45" href="javascript:;" data-toggle="collapse" data-target="#chair"><i class="fa fa-chair" ></i> 
 				Chair</a>
-			</li>
+			</li-->
 		
 		</ul>
           </li>
@@ -71,7 +71,7 @@
           </li>
 		<li class="panel">
 			<a id="panel6" href="javascript:;" data-toggle="collapse" data-target="#type"> <i class="fa fa-inbox"></i> Types
-			  <span class="label label-primary">new msz</span> </a>
+			  <!--span class="label label-primary">new msz</span--> </a>
 			<ul class="collapse nav submenu1" id="type">
 				<li>
 					<a id="panel61" href="amenitiesT.php" data-toggle="collapse" data-target="#aminites"><i class="fa fa-university" ></i> 
@@ -108,8 +108,8 @@
 		    </li>
 		   
 		<li class="panel">
-			<a id="panel3" href="javascript:;" data-toggle="collapse" data-target="#calendar"> <i class="fa fa-calendar"></i> calendar
-			  <span class="label label-danger">new event</span> </a>
+			<a id="panel3" href="calander.php" data-toggle="collapse" data-target="#calendar"> <i class="fa fa-calendar"></i> calendar
+			  <!--span class="label label-danger">new event</span--> </a>
 			
 		    </li>
 		     

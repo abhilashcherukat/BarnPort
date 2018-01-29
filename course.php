@@ -250,7 +250,7 @@
 						
 						<div class='col-xs-6 col-sm-6 col-md-1'>Location</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
-							<div class='form-group'>
+							<div class='form-group' id='Locations'>
 								
 								".$Str3."
 								
@@ -371,7 +371,15 @@
 	function Addnew()
 	{
 		$('#TIT_Addcourse').html("Add");
-		//$('#course_title').val("");
+		$('#course_title').val(J.data.title);
+			$('#course_desc').val("");
+			$('#course_start').val("");
+			$('#course_end').val("");
+			$('#course_type')[0].selectedIndex = 0; 
+			$('#course_fee')[0].selectedIndex = 0; 
+			$('#course_organiser')[0].selectedIndex = 0; 
+			$('#course_tags').val(J.data.tags)[0].selectedIndex = 0; 
+			$('#course_type').val(J.data.type.id)[0].selectedIndex = 0; 
 		$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Addcourse');
 	}
 	function Editthis(Id)
@@ -390,12 +398,21 @@
 			$('#course_desc').val(J.data.description);
 			$('#course_start').val(J.data.startdate);
 			$('#course_end').val(J.data.enddate);
-			//$('#course_type').val(J.data.type.id).attr("selected", "selected");
-			//$('#course_fee').val(J.data.fee.id).attr("selected", "selected");
-			//$('#course_organiser').val(J.data.organiser.id).attr("selected", "selected");
-			//$('#course_barn').val(J.data.venue.id).attr("selected", "selected");
+			$('#course_type').val(J.data.type.id).attr("selected", "selected");
+			$('#course_fee').val(J.data.fee.id).attr("selected", "selected");
+			$('#course_organiser').val(J.data.organiser.id).attr("selected", "selected");
 			$('#course_tags').val(J.data.tags).attr("selected", "selected");
-			//$('#course_type').val(J.data.type.id).attr("selected", "selected");
+			$('#course_type').val(J.data.type.id).attr("selected", "selected");
+			
+			console.log(J.data.venues.length);
+			for(k=0;k<J.data.venues.length;k++)
+			{
+				Idx="input[value='"+J.data.venues[k].barn.id+"']";
+				$(Idx).attr("checked","checked");
+				console.log(J.data.venues[k].barn.title);
+			}
+		
+			
 			$('#opt').val(2);
 			$('#Addcourse_IdValue').val(Id);
 			$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Editcourse');
