@@ -104,9 +104,31 @@
 		len=Amenities.length
 		for(io=0;io<len;io++)
 		{
-			Str+="<td class='badge' style='margin:2px;'><img style='width:25px;height:25px;' src='images/amenities/"+Amenities[io].icon+"'></td>";
+			Str+="<td class='badge' style='margin:2px;'><img style='width:25px;height:25px;' src='"+Amenities[io].icon+"'></td>";
 		}
 		Str+="</tr>";
+		Str+="</table>";
+		return Str;
+	}
+	function GetFee(Fee)
+	{
+		
+		Str="<table>";
+		Str+="<tr><td class='badge' style='margin:2px;'>"+Fee.title+"</td></tr>";
+		Str+="<tr><td class='' style='margin:2px;'>Basic:"+Fee.structure.base.value+"</td></tr>";
+		len=Fee.structure.addon.length
+		Str+="<tr><td class='badge' style='margin:2px;'>Addon</td></tr>";
+		for(io=0;io<len;io++)
+		{
+			Str+="<tr><td style='margin:2px;'>"+Fee.structure.addon[io].title+":"+Fee.structure.addon[io].value+"</td></tr>";
+		}
+		len=Fee.structure.discount.length
+		Str+="<tr><td class='badge' style='margin:2px;'>Discount</td></tr>";
+		for(io=0;io<len;io++)
+		{
+			Str+="<tr><td style='margin:2px;'>"+Fee.structure.discount[io].title+":"+Fee.structure.discount[io].value+"</td></tr>";
+		}
+		
 		Str+="</table>";
 		return Str;
 	}

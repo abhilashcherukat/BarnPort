@@ -11,6 +11,12 @@
 	</head>
 	<body>
 	<?php
+		if(isset($_POST['Yes_btn_ConfirmYesNo']))
+		{
+			$params=[];
+			$post_url = $URL."/commonlist/booking?id=".$_POST['IdValue'];
+			$post_response=$Obj_Commonfunction->CurlSendDelRequest($post_url,$params) ;
+		}
 		if(isset($_POST['OK_btn_CreateFormPopup_AddbookingType']))
 		{
 			
@@ -150,7 +156,7 @@
 								Str+="<td>"+JData.title+"</td>";
 								
 								Str+="<td><a href='#' data-toggle='modal' data-target='#AddbookingType' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
-								Str+="<a href='#'>Delete</a></td></tr>";
+								Str+="<a data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Delete</a></td></tr>";
 							}
 							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";
 							$('#bookingTypetbl').append(Str);

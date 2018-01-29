@@ -87,12 +87,26 @@ class CommonFunctions
 		$data = curl_exec($ch);
 		$curl_errno = curl_errno($ch);
 		$curl_error = curl_error($ch);
+		//echo "<script> console.log('ErrNo:".$curl_errno."')</script>";
+		//echo "<script> console.log('Err:".$curl_error."')</script>";
+		curl_close($ch);
+		return $data;
+	}
+	
+	function CurlSendDelRequest($url,$request){
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+		curl_setopt($ch, CURLOPT_HTTPHEADER,array("Authcode:".$_SESSION['USERID']));
+		curl_setopt($ch, CURLOPT_POSTFIELDS,$request);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+		$data = curl_exec($ch);
+		$curl_errno = curl_errno($ch);
+		$curl_error = curl_error($ch);
 		echo "<script> console.log('ErrNo:".$curl_errno."')</script>";
 		echo "<script> console.log('Err:".$curl_error."')</script>";
 		curl_close($ch);
 		return $data;
 	}
-	
 	function GetData($opt,$what,$name=false)
 	{
 		$URL=$this->config('APIURL')."/".$what;

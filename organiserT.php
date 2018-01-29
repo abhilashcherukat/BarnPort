@@ -11,6 +11,12 @@
 	</head>
 	<body>
 	<?php
+		if(isset($_POST['Yes_btn_ConfirmYesNo']))
+		{
+			$params=[];
+			$post_url = $URL."/commonlist/organiser?id=".$_POST['IdValue'];
+			$post_response=$Obj_Commonfunction->CurlSendDelRequest($post_url,$params) ;
+		}
 		if(isset($_POST['OK_btn_CreateFormPopup_AddorganiserType']))
 		{
 			

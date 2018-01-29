@@ -13,26 +13,37 @@
 	</head>
 	<body>
 	<?php
+
 		if(isset($_POST['Yes_btn_ConfirmYesNo']))
 		{
-			$params=['opt'=>'1','table'=>$_POST['IdValue']];
+			$params=[];
+			$post_url = $URL."/table/".$_POST['IdValue'];
+			$post_response=$Obj_Commonfunction->CurlSendDelRequest($post_url,$params) ;
+		}
+		if(isset($_POST['OK_btn_CreateFormPopup_AddChair']))
+		{
+			
+			$params=['opt'=>'1','table'=>$_POST['AddChair_IdValue']];
 			$post_url = $URL."/chair/";
 			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
 		}
 	
+		
 		if(isset($_POST['OK_btn_CreateFormPopup_Addtable']))
 		{
 			
-			$params=['opt'=>'1','title'=>$_POST['table_title'],'id'=>$_POST['Addtable_IdValue']];
+			$params=['opt'=>'1','barn'=>$_POST['table_barn']];
 			$post_url = $URL."/table/";
 			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
 		}
 		if(isset($_POST['OK_btn_CreateFormPopup_Edittable']))
 		{
-			$params=['opt'=>'2','title'=>$_POST['table_title'],'id'=>$_POST['Addtable_IdValue']];
-			$post_url = $URL."/table/";
+			$params=['opt'=>'1','barn'=>$_POST['table_barn']];
+		
+			$post_url = $URL."/table/".$_POST['Addtable_IdValue'];
 			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
 		}
+	
 	?>
 	 <?php require_once('navbar_include.php');
 	 ?>
@@ -99,12 +110,20 @@
 			CreateConfirmModal("Add a chair","Are you sure you want to add a chair  to this</b>?");
 			
 			$Html="  <div class='row'>
+						Are you sure you want to add a chair  to this?
+					</div>";
+			CreateFormPopup("AddChair","Add new chair",$Html,'AddChair');
+			
+			$Str=$Obj_Commonfunction->GetData("COMBO","barn/?opt=combo");
+			$Html="  <div class='row'>
 						<div class='col-xs-6 col-sm-6 col-md-1'>
 							Barn
 						</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-								".$Obj_Commonfunction->GetData("COMBO","barn/?opt=combo")."<input type='text' name='table_title'  id='table_title' class='form-control input-sm' required>
+								<select name='table_barn' id='table_barn' class='form-control input-sm'>
+								".$Str."
+								</select>
 							</div>
 						</div>
 						
@@ -165,8 +184,8 @@
 								Str+="<td>"+JData.chair[0].totalrecords+"</td>";
 								
 								Str+="<td><!--a href='#' data-toggle='modal' data-target='#Addtable' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
-								Str+=" | --><a href='#'>Delete</a> | ";
-								Str+="<a href='#' data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Add Chair</a></td></tr>";
+								Str+=" | --><a data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Delete</a>| ";
+								Str+="<a href='#' data-toggle='modal' data-target='#AddChair' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Add Chair</a></td></tr>";
 							}
 							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";
 							$('#tabletbl').append(Str);
@@ -195,7 +214,7 @@
 									});
 			posting.done(function(J) {
 				clog(JSON.stringify(J))
-			$('#table_number').val(J.data.number);
+			$('#table_barn').val(J.data.number);
 			$('#opt').val(2);
 			$('#Addtable_IdValue').val(Id);
 			$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Edittable');
@@ -208,6 +227,7 @@
 	function Deletethis(Id,Title)
 	{
 		$('#currentObject').html(Title);
+		$('#AddChair_IdValue').val(Id);
 		$('#IdValue').val(Id);
 	}	
 	</script>

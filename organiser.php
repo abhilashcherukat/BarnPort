@@ -13,7 +13,12 @@
 	</head>
 	<body>
 	<?php
-		
+		if(isset($_POST['Yes_btn_ConfirmYesNo']))
+		{
+			$params=[];
+			$post_url = $URL."/organiser/".$_POST['IdValue'];
+			$post_response=$Obj_Commonfunction->CurlSendDelRequest($post_url,$params) ;
+		}
 		if(isset($_POST['OK_btn_CreateFormPopup_Addorganiser']))
 		{
 			
@@ -23,8 +28,8 @@
 			'description'=>$_POST['organiser_desc'],
 			'id'=>$_POST['Addorganiser_IdValue']];
 			$post_url = $URL."/organiser/";
-			var_dump($_FILES);
-			echo "<script>console.log('IMAGE:".empty($_FILES['organiser_img']['name']).":".$_FILES['organiser_img']['name']."')</script>";
+			//var_dump($_FILES);
+			//echo "<script>console.log('IMAGE:".empty($_FILES['organiser_img']['name']).":".$_FILES['organiser_img']['name']."')</script>";
 			if (empty($_FILES['organiser_img']['name'])!=1) 
 			{
 				$FileName=$_FILES["organiser_img"]["name"];
@@ -125,7 +130,7 @@
 										<th>Events</th>
 										<th></th>
 										</tr>
-									</organiser>
+									</table>
 								</div>
 							</div>
 						</div>
@@ -233,7 +238,7 @@
 								
 								
 								Str+="<td><a href='#' data-toggle='modal' data-target='#Addorganiser' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
-								Str+=" | <a href='#'>Delete</a> </td></tr>";
+								Str+=" | <a data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Delete</a></td></tr>";
 							}
 							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";
 							$('#organisertbl').append(Str);

@@ -24,33 +24,33 @@
 	<body>
 	<?php
 		
-		if(isset($_POST['Yes_btn_ConfirmYesNo']))
+		if(isset($_POST['OK_btn_CreateFormPopup_Addcourse']))
 		{
-			$params=[];
-			$post_url = $URL."/event/".$_POST['IdValue'];
-			$post_response=$Obj_Commonfunction->CurlSendDelRequest($post_url,$params) ;
-		}
-		if(isset($_POST['OK_btn_CreateFormPopup_Addevent']))
-		{
-			
 			$params=['opt'=>'1',
-			'title'=>$_POST['event_title'],
-			'description'=>$_POST['event_desc'],
-			'duration'=>$_POST['event_hpd'],
-			'end'=>$_POST['event_end'],
-			'start'=>$_POST['event_start'],
+			'title'=>$_POST['course_title'],
+			'description'=>$_POST['course_desc'],
+			'duration'=>'{"days":'.$_POST['course_days'].',"hours_per_day":'.$_POST['course_hpd'].'}',
+			'agelimit'=>'{"from":'.$_POST['course_from'].',"to":'.$_POST['course_to'].'}',
+			'coursehistory'=>'1',
 			'status'=>'RGT',
-			'feestructure'=>$_POST['event_fee'],
-			'eventtype'=>$_POST['event_type'],
-			'tags'=>$_POST['event_tags'],
-			'barn'=>$_POST['event_barn'],
-			'organiser'=>$_POST['event_organiser'],
-			$post_url = $URL."/event/"];
-			var_dump($_FILES);
-			if (empty($_FILES['event_img']['name'])!=1) 
+			'feestructure'=>$_POST['course_fee'],
+			'coursetype'=>$_POST['course_type'],
+			'organiser'=>$_POST['course_organiser'],
+			'tags'=>$_POST['course_tags'],
+			];
+			if(isset($_POST['ameni']))
 			{
-				$FileName=$_FILES["event_img"]["name"];
-				$file_tmp= $_FILES["event_img"]['tmp_name'];
+				$params['location']=json_encode($_POST['ameni']);
+			}else
+			{
+					$params['location']=json_encode(array());
+			}
+			$post_url = $URL."/course/";
+			var_dump($_FILES);
+			if (empty($_FILES['course_img']['name'])!=1) 
+			{
+				$FileName=$_FILES["course_img"]["name"];
+				$file_tmp= $_FILES["course_img"]['tmp_name'];
 				$type = pathinfo($file_tmp, PATHINFO_EXTENSION);
 				$data = file_get_contents($file_tmp);
 				$base64 = base64_encode($data);
@@ -61,29 +61,34 @@
 				$Array=array("name"=>"","content"=>"");
 				$params['image']=json_encode($Array);
 			}
-		
 			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
 		}
-		if(isset($_POST['OK_btn_CreateFormPopup_Editevent']))
+		if(isset($_POST['OK_btn_CreateFormPopup_Editcourse']))
 		{
 			$params=['opt'=>'2',
-			'title'=>$_POST['event_title'],
-			'description'=>$_POST['event_desc'],
-			'duration'=>$_POST['event_hpd'],
-			'end'=>$_POST['event_end'],
-			'start'=>$_POST['event_start'],
+			'title'=>$_POST['course_title'],
+			'description'=>$_POST['course_desc'],
+			'duration'=>'{"days":'.$_POST['course_days'].',"hours_per_day":'.$_POST['course_hpd'].'}',
+			'agelimit'=>'{"from":'.$_POST['course_from'].',"to":'.$_POST['course_to'].'}',
+			'coursehistory'=>'1',
 			'status'=>'RGT',
-			'feestructure'=>$_POST['event_fee'],
-			'eventtype'=>$_POST['event_type'],
-			'tags'=>$_POST['event_tags'],
-			'barn'=>$_POST['event_barn'],
-			'organiser'=>$_POST['event_organiser']];
-			$post_url = $URL."/event/".$_POST['Addevent_IdValue'];
-			echo $post_url;
-			if (empty($_FILES['event_img']['name'])!=1) 
+			'feestructure'=>$_POST['course_fee'],
+			'coursetype'=>$_POST['course_type'],
+			'organiser'=>$_POST['course_organiser'],
+			'tags'=>$_POST['course_tags'],
+			];
+			if(isset($_POST['ameni']))
 			{
-				$FileName=$_FILES["event_img"]["name"];
-				$file_tmp= $_FILES["event_img"]['tmp_name'];
+				$params['location']=json_encode($_POST['ameni']);
+			}else
+			{
+					$params['location']=json_encode(array());
+			}
+			$post_url = $URL."/course/".$_POST['Addcourse_IdValue'];
+			if (empty($_FILES['course_img']['name'])!=1) 
+			{
+				$FileName=$_FILES["course_img"]["name"];
+				$file_tmp= $_FILES["course_img"]['tmp_name'];
 				$type = pathinfo($file_tmp, PATHINFO_EXTENSION);
 				$data = file_get_contents($file_tmp);
 				$base64 = base64_encode($data);
@@ -95,6 +100,8 @@
 				$params['image']=json_encode($Array);
 			}
 			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
+			
+			
 		}
 	
 		
@@ -114,7 +121,7 @@
 						<div class="col-md-4">
 							<ul class="breadcrumb">
 								<li><i class="fa fa-home"></i><a href="/"> Home</a></li>
-								<li class="active">event</li>
+								<li class="active">course</li>
 							</ul>
 						</div>
 						<div class="col-md-8">
@@ -124,12 +131,12 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="main-header">
-								<h2>event</h2>
+								<h2>course</h2>
 								<em>the first priority information</em>
 								<img src='images/loader.gif' id='loading-image'>
 							</div>
 							<div class="row padding-top">
-								<div class='btn btn-success circle' id='btn_addevent' data-toggle='modal' data-target='#Addevent' data-original-title onclick='Addnew()' >Add new</div>
+								<div class='btn btn-success circle' id='btn_addcourse' data-toggle='modal' data-target='#Addcourse' data-original-title onclick='Addnew()' >Add new</div>
 								<div class="col-md-12" id='container'>
 									<?php
 										if(isset($post_response))
@@ -144,22 +151,24 @@
 										}
 									
 									?>
-									<table class='table' id='eventtbl'>
+									<table class='table' id='coursetbl'>
 										<tr>
 										<th>#</th>
 										<th>Name</th>
 										<th>Organiser</th>
 										<th>Image</th>
 										<th>Venue</th>
-										<th>Dates</th>
 										<th>Description</th>
+										<th>Duration</th>
+										<th>Age limit</th>
+										
 										<th>Type</th>
 										<th>Tags</th>
 										<th>Fee</th>
 										
 										<th></th>
 										</tr>
-									</event>
+									</table>
 								</div>
 							</div>
 						</div>
@@ -168,11 +177,11 @@
 			</div>
 		</div>
 		<?php require_once('Modal.php'); 
-			CreateConfirmModal("Add a chair","Are you sure you want to add a chair  to this</b>?");
+			CreateConfirmModal("Delete course","Are you sure you want to delete this course?");
 			$Str1=$Str2=$Str3=$Str4="";
 			$Str1=$Obj_Commonfunction->GetData("COMBO","organiser/?opt=combo",true);
-			$Str2=$Obj_Commonfunction->GetData("COMBO","commonlist/event?opt=combo");
-			$Str3=$Obj_Commonfunction->GetData("COMBO","barn/?opt=combo");
+			$Str2=$Obj_Commonfunction->GetData("COMBO","commonlist/course?opt=combo");
+			$Str3=$Obj_Commonfunction->GetData("LIST","barn/?opt=combo");
 			$Str4=$Obj_Commonfunction->GetData("COMBO","feestructure/?opt=combo");
 			
 		$Html="<input type='hidden' name='opt'  id='opt' class='form-control input-sm' required value=1>
@@ -180,7 +189,7 @@
 						<div class='col-xs-6 col-sm-6 col-md-1'>Title</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-									<input type='text' name='event_title'  id='event_title'  class='form-control input-sm' required>
+									<input type='text' name='course_title'  id='course_title'  class='form-control input-sm' required>
 							</div>
 						</div>
 						
@@ -189,7 +198,7 @@
 						</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-									<select name='event_organiser' id='event_organiser' class='form-control input-sm' >
+									<select name='course_organiser' id='course_organiser' class='form-control input-sm' >
 									".$Str1."
 									</select>
 							</div>
@@ -200,30 +209,31 @@
 						</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-									<input type='file' name='event_img' id='event_img' class='form-control input-sm' >
+									<input type='file' name='course_img' id='course_img' class='form-control input-sm' >
 							</div>
 						</div>	
 					</div>
 					
 					<div class='row'>
-						<div class='col-xs-6 col-sm-6 col-md-1'>Start</div>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Age Limit</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-									<input type='date' name='event_start' id='event_start' class='form-control input-sm' required>
+									<input type='number' name='course_from'  value=10  id='course_from' class='form-control input-sm' required style='width:40%;float:left;'  min='10' max='60'>   to
+									<input type='number' name='course_to'  value=35  id='course_to' class='form-control input-sm' required style='width:40%;float:right'  min='10' max='60'>
 							</div>
 						</div>
 						
-						<div class='col-xs-6 col-sm-6 col-md-1'>End</div>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Days</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-									<input type='date' name='event_end' id='event_end' class='form-control input-sm' required>
+								<input type='number' name='course_days' id='course_days'  value=1  class='form-control input-sm'  min='1' max='60' required>
 							</div>
 						</div>
 						
 						<div class='col-xs-6 col-sm-6 col-md-1'>Hours per day</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-									<input type='number' name='event_hpd' id='event_hpd' class='form-control input-sm' >
+									<input type='number' name='course_hpd' value=1 id='course_hpd' class='form-control input-sm'  min='1' max='8'>
 							</div>
 						</div>
 					</div>
@@ -232,25 +242,25 @@
 						<div class='col-xs-6 col-sm-6 col-md-1'>Type</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-								<select name='event_type' id='event_type' class='form-control input-sm'>
+								<select name='course_type' id='course_type' class='form-control input-sm'>
 								".$Str2."
 								</select>
 							</div>
 						</div>
 						
-						<div class='col-xs-6 col-sm-6 col-md-1'>Barn</div>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Location</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-								<select name='event_barn' id='event_barn' class='form-control input-sm'>
+								
 								".$Str3."
-								</select>
+								
 							</div>
 						</div>
 						
 						<div class='col-xs-6 col-sm-6 col-md-1'>Tags</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-									<input type='text' name='event_tags' id='event_tags' class='form-control input-sm' >
+									<input type='text' name='course_tags' id='course_tags' class='form-control input-sm' >
 							</div>
 						</div>
 					</div>
@@ -259,7 +269,7 @@
 						<div class='col-xs-6 col-sm-6 col-md-1'>Fee structure</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-							<select name='event_fee' id='event_fee' class='form-control input-sm'>
+							<select name='course_fee' id='course_fee' class='form-control input-sm'>
 								".$Str4."
 								</select>
 							</div>
@@ -267,11 +277,11 @@
 						<div class='col-xs-6 col-sm-6 col-md-1'>Description</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-									<input type='text' name='event_desc'  id='event_desc'  value='XDesc' class='form-control input-sm' required>
+									<input type='text' name='course_desc'  id='course_desc'  value='XDesc' class='form-control input-sm' required>
 							</div>
 						</div>
 					</div>";
-			CreateFormPopup("Addevent","Add event",$Html,'Addevent',"?page=".$Page,"enctype= multipart/form-data");
+			CreateFormPopup("Addcourse","Add course",$Html,'Addcourse',"?page=".$Page,"enctype= multipart/form-data");
 			?>
 	</body>
 	<?php 
@@ -285,7 +295,7 @@
 				
 			var posting=$.ajax({ 	
 										type: "GET",
-										url: "<?php echo $URL; ?>/event/",
+										url: "<?php echo $URL; ?>/course/",
 										<?php if(isset($_SESSION['USERID'])){$USERID=$_SESSION['USERID'];}else{$USERID="";} 	?>
 										headers: {'Authcode':<?php echo "'".$USERID."'";?>},
 										data:{'page':<?php echo $Page; ?>}
@@ -310,7 +320,7 @@
 							Str=""
 							if(data.data[0].data.length<=0)
 							{
-								$('#eventtbl').append("<tr><td>No records</td></tr>");
+								$('#coursetbl').append("<tr><td>No records</td></tr>");
 							}
 							//console.log("This is the length:"+data.data[0].data.length);
 							for(i=0;i<data.data[0].data.length;i++)
@@ -321,24 +331,36 @@
 								Str+="<td>"+(i+1)+"</td>";
 								Str+="<td>"+JData.title+"</td>";
 								Str+="<td>"+JData.organiser.name+"</td>";
+								//Str+="<td>"+JData.organiser.name+"</td>";
 								Str+="<td><img style='width:50px;height:50px;' src="+JData.image+"></td>";
-								Str+="<td>"+JData.venue.title+"<sub>("+JData.venue.location+")</sub></td>";
+								Str+="<td>";
+								for(ii=0;ii<JData.venues.length;ii++)
+								{
+									Str+=JData.venues[ii].barn.title+"<br>";
+								}
+								Str+="</td>"
 								
-								
-								Str+="<td>"+JData.startdate+" to "+JData.enddate+"</td>";
+								//Str+="<td>"+JData.startdate+" to "+JData.enddate+"</td>";
 								Str+="<td>"+JData.description+"</td>";
-								
+								Str+="<td>Days:"+JData.duration.days+"<br>Per Hr:"+JData.duration.hours_per_day+"</td>";
+								if(JData.agelimit.from==0)
+								{
+										Str+="<td>No limit</td>";
+								}else
+								{
+									Str+="<td>"+JData.agelimit.from+" - "+JData.agelimit.to+"</td>";
+								}
 								Str+="<td>"+JData.type.title+"</td>";
 								Str+="<td>"+JData.tags+"</td>";
 								Str+="<td>"+GetFee(JData.fee)+"</td>";
 								
 								
 								
-								Str+="<td><a href='#' data-toggle='modal' data-target='#Addevent' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
+								Str+="<td><a href='#' data-toggle='modal' data-target='#Addcourse' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
 								Str+=" | <a data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Delete</a></td></tr>";
 							}
-							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";
-							$('#eventtbl').append(Str);
+							Str+="<tr><td colspan=12 id='tblPaginate'></td></tr>";
+							$('#coursetbl').append(Str);
 							
 							Str=pagination	(<?php echo $Page; ?>,data.data[0].totalrecords)	
 							$('#tblPaginate').append(Str);
@@ -348,35 +370,35 @@
 		});
 	function Addnew()
 	{
-		$('#TIT_Addevent').html("Add");
-		//$('#event_title').val("");
-		$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Addevent');
+		$('#TIT_Addcourse').html("Add");
+		//$('#course_title').val("");
+		$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Addcourse');
 	}
 	function Editthis(Id)
 	{
-		$('#TIT_Addevent').html("Edit");
+		$('#TIT_Addcourse').html("Edit");
 		var posting=$.ajax({ 	
 										type: "GET",
-										url: "<?php echo $URL; ?>/event/"+Id,
+										url: "<?php echo $URL; ?>/course/"+Id,
 										<?php if(isset($_SESSION['USERID'])){$USERID=$_SESSION['USERID'];}else{$USERID="";} 	?>
 										headers: {'Authcode':<?php echo "'".$USERID."'";?>},
 										data:{"id":Id}
 									});
 			posting.done(function(J) {
 				clog(J)
-			$('#event_title').val(J.data.title);
-			$('#event_desc').val(J.data.description);
-			$('#event_start').val(J.data.startdate);
-			$('#event_end').val(J.data.enddate);
-			$('#event_type').val(J.data.type.id).attr("selected", "selected");
-			$('#event_fee').val(J.data.fee.id).attr("selected", "selected");
-			$('#event_organiser').val(J.data.organiser.id).attr("selected", "selected");
-			$('#event_barn').val(J.data.venue.id).attr("selected", "selected");
-			$('#event_tags').val(J.data.tags).attr("selected", "selected");
-			//$('#event_type').val(J.data.type.id).attr("selected", "selected");
+			$('#course_title').val(J.data.title);
+			$('#course_desc').val(J.data.description);
+			$('#course_start').val(J.data.startdate);
+			$('#course_end').val(J.data.enddate);
+			//$('#course_type').val(J.data.type.id).attr("selected", "selected");
+			//$('#course_fee').val(J.data.fee.id).attr("selected", "selected");
+			//$('#course_organiser').val(J.data.organiser.id).attr("selected", "selected");
+			//$('#course_barn').val(J.data.venue.id).attr("selected", "selected");
+			$('#course_tags').val(J.data.tags).attr("selected", "selected");
+			//$('#course_type').val(J.data.type.id).attr("selected", "selected");
 			$('#opt').val(2);
-			$('#Addevent_IdValue').val(Id);
-			$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Editevent');
+			$('#Addcourse_IdValue').val(Id);
+			$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Editcourse');
 			});
 			posting.error(function(J) {
 				console.log(J);

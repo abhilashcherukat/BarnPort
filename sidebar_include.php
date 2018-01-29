@@ -1,8 +1,9 @@
 <div class="left-sidebar" id="show-nav">
 	<ul id="side" class="side-nav">
 		<li class="panel">
-            <a id="panel1" href="dashboard.php" data-toggle="collapse" data-target="#Dashboard"> <i class="fa fa-dashboard"></i> Dashboard
-             </a>
+			<a id="panel1" href="dashboard.php" data-toggle="collapse" data-target="#Dashboard">
+				<i class="fa fa-dashboard"></i> Dashboard
+			</a>
             <ul class="collapse nav" id="Dashboard">
             
             </ul>
@@ -39,15 +40,20 @@
 		</ul>
           </li>
 		<li class="panel">
-            <a id="panel5" href="javascript:;" data-toggle="collapse" data-target="#course"> <i class="fa fa-graduation-cap "></i> Courses</a>
-            
-          </li>
+            <a id="panel5" href="course.php" data-toggle="collapse" data-target="#course"> <i class="fa fa-graduation-cap "></i> Courses</a>
+           </li>
+	     
 		<li class="panel">
-            <a id="panel7" href="event.php" data-toggle="collapse" data-target="#events"> <i class="fa fa-snowflake-o"></i> Event
+			<a id="panel7" href="event.php" data-toggle="collapse" data-target="#events">
+			<i class="fa fa-snowflake-o"></i> Event
+			</a>
+		</li>
+		<li class="panel">
+            <a id="panel17" href="fee.php" data-toggle="collapse" data-target="#events"> <i class="fa fa-rupee"></i> Fee Structure
              
             </a>
             
-          </li>
+          </li>    
 	    
 	    
 		<li class="panel">
