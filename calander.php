@@ -90,7 +90,7 @@
 		</div>
             <div class="row padding-top">
 			<div id='script-warning'>
-			    <code>php/get-events.php</code> must be running.
+			    <code>Server must be running.</code>
 			  </div>
 
 			  <div id='loading'>loading...</div>

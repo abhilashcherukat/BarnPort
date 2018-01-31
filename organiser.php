@@ -139,7 +139,7 @@
 			</div>
 		</div>
 		<?php require_once('Modal.php'); 
-			CreateConfirmModal("Add a chair","Are you sure you want to add a chair  to this</b>?");
+			CreateConfirmModal("Delete Organiser","Are you sure you want to delete this?");
 			
 			$Str=$Obj_Commonfunction->GetData("COMBO","commonlist/organiser?opt=combo");
 			

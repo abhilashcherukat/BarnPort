@@ -11,6 +11,12 @@
 	</head>
 	<body>
 	<?php
+		if(isset($_POST['Yes_btn_ConfirmYesNo']))
+		{
+			$params=[];
+			$post_url = $URL."/commonlist/amenities?id=".$_POST['IdValue'];
+			$post_response=$Obj_Commonfunction->CurlSendDelRequest($post_url,$params) ;
+		}
 		if(isset($_POST['OK_btn_CreateFormPopup_AddAmenitiesType']))
 		{
 			
@@ -120,7 +126,7 @@
 			</div>
 		</div>
 		<?php require_once('Modal.php'); 
-			CreateConfirmModal("Delete AmenitiesType","Are you sure you want to delete <b id='currentObject'>this</b>?");
+			CreateConfirmModal("Delete Amenities","Are you sure you want to delete <b id='currentObject'>this</b>?","","?page=".$Page);
 			
 			$Html="  <div class='row'>
 						<div class='col-xs-6 col-sm-6 col-md-1'>

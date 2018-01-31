@@ -104,12 +104,8 @@
 			</div>
 		</div>
 		<?php require_once('Modal.php'); 
-			CreateConfirmModal("Add a chair","Are you sure you want to add a chair  to this</b>?");
+			CreateConfirmModal("Delete floor","Are you sure you want to delete this?");
 			
-			$Html="  <div class='row'>
-						Are you sure you want to add a chair  to this?
-					</div>";
-			CreateFormPopup("AddChair","Add new chair",$Html,'AddChair');
 			
 			$Str=$Obj_Commonfunction->GetData("COMBO","barn/?opt=combo");
 			$Html="  <div class='row'>

@@ -26,7 +26,7 @@
 		if(isset($_POST['Yes_btn_ConfirmYesNo']))
 		{
 			$params=[];
-			$post_url = $URL."/feestructure?id=".$_POST['IdValue'];
+			$post_url = $URL."/feestructure/".$_POST['IdValue'];
 			$post_response=$Obj_Commonfunction->CurlSendDelRequest($post_url,$params) ;
 		}
 		if(isset($_POST['OK_btn_CreateFormPopup_Addfee']))
@@ -123,7 +123,7 @@
 										{
 											echo "<script>setTimeout(function(){ $('.alert').fadeOut();}, 3000);</script>";
 											$J=json_decode($post_response);
-											echo $post_response;
+											//echo $post_response;
 											$Arr=array();
 											$Arr['success']="alert-success";
 											$Arr['error']="alert-danger";

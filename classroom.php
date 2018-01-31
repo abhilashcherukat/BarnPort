@@ -26,14 +26,7 @@
 			$post_url = $URL."/classroom/".$_POST['IdValue'];
 			$post_response=$Obj_Commonfunction->CurlSendDelRequest($post_url,$params) ;
 		}
-		if(isset($_POST['OK_btn_CreateFormPopup_AddChair']))
-		{
-			
-			$params=['opt'=>'1','classroom'=>$_POST['AddChair_IdValue']];
-			$post_url = $URL."/chair/";
-			$post_response=$Obj_Commonfunction->CurlSendPostRequest($post_url,$params) ;
-		}
-	
+		
 		
 		if(isset($_POST['OK_btn_CreateFormPopup_Addclassroom']))
 		{
@@ -112,12 +105,8 @@
 			</div>
 		</div>
 		<?php require_once('Modal.php'); 
-			CreateConfirmModal("Add a chair","Are you sure you want to add a chair  to this</b>?");
+			CreateConfirmModal("Delete classroom","Are you sure you want to this</b>?");
 			
-			$Html="  <div class='row'>
-						Are you sure you want to add a chair  to this?
-					</div>";
-			CreateFormPopup("AddChair","Add new chair",$Html,'AddChair');
 			
 			$Str=$Obj_Commonfunction->GetData("COMBO","barn/?opt=combo");
 			$Html="  <div class='row'>

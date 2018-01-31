@@ -20,10 +20,27 @@
 			font-size:10px;
 		}
 		</style>
+		        
+        <link rel="stylesheet" type="text/css" href="css/daterangepicker.css" />
 	</head>
 	<body>
 	<?php
-		
+		function MakeDate($Dt)
+		{
+			$FirstCut=explode(" ",$Dt);
+			$Date=explode("/",$FirstCut[0]);
+			$Dates=$Date[2]."-".$Date[1]."-".$Date[0];
+			
+			if($FirstCut[2]=="PM")
+			{
+				$Time=explode(":",$FirstCut[1]);
+				$Times=($Time[0]+12).":".$Time[1];
+			}else
+			{
+				$Times=$FirstCut[1];
+			}
+			return $Dates." ".$Times;
+		}
 		if(isset($_POST['Yes_btn_ConfirmYesNo']))
 		{
 			$params=[];
@@ -32,13 +49,18 @@
 		}
 		if(isset($_POST['OK_btn_CreateFormPopup_Addevent']))
 		{
+			//echo "<script>console.log('".$_POST['event_range']."');</script>";
+			$FirstCut=explode(" - ",$_POST['event_range']);
+			
+			$Start=$FirstCut[0];
+			$End=$FirstCut[1];
 			
 			$params=['opt'=>'1',
 			'title'=>$_POST['event_title'],
 			'description'=>$_POST['event_desc'],
 			'duration'=>$_POST['event_hpd'],
-			'end'=>$_POST['event_end']."T23:59:59",
-			'start'=>$_POST['event_start']."T00:00:00",
+			'end'=>MakeDate($End),
+			'start'=>MakeDate($Start),
 			'status'=>'RGT',
 			'feestructure'=>$_POST['event_fee'],
 			'eventtype'=>$_POST['event_type'],
@@ -46,7 +68,7 @@
 			'barn'=>$_POST['event_barn'],
 			'organiser'=>$_POST['event_organiser'],
 			$post_url = $URL."/event/"];
-			var_dump($_FILES);
+			//var_dump($params);
 			if (empty($_FILES['event_img']['name'])!=1) 
 			{
 				$FileName=$_FILES["event_img"]["name"];
@@ -66,12 +88,17 @@
 		}
 		if(isset($_POST['OK_btn_CreateFormPopup_Editevent']))
 		{
+			$FirstCut=explode(" - ",$_POST['event_range']);
+			
+			$Start=$FirstCut[0];
+			$End=$FirstCut[1];
+			
 			$params=['opt'=>'2',
 			'title'=>$_POST['event_title'],
 			'description'=>$_POST['event_desc'],
 			'duration'=>$_POST['event_hpd'],
-			'end'=>$_POST['event_end'],
-			'start'=>$_POST['event_start'],
+			'end'=>MakeDate($End),
+			'start'=>MakeDate($Start),
 			'status'=>'RGT',
 			'feestructure'=>$_POST['event_fee'],
 			'eventtype'=>$_POST['event_type'],
@@ -168,7 +195,7 @@
 			</div>
 		</div>
 		<?php require_once('Modal.php'); 
-			CreateConfirmModal("Add a chair","Are you sure you want to add a chair  to this</b>?");
+			CreateConfirmModal("Delete event","Are you sure you want to delete this event</b>?");
 			$Str1=$Str2=$Str3=$Str4="";
 			$Str1=$Obj_Commonfunction->GetData("COMBO","organiser/?opt=combo",true);
 			$Str2=$Obj_Commonfunction->GetData("COMBO","commonlist/event?opt=combo");
@@ -206,17 +233,11 @@
 					</div>
 					
 					<div class='row'>
-						<div class='col-xs-6 col-sm-6 col-md-1'>Start</div>
-						<div class='col-xs-6 col-sm-6 col-md-3'>
-							<div class='form-group'>
-									<input type='date' name='event_start' id='event_start' class='form-control input-sm' required>
-							</div>
-						</div>
+						<div class='col-xs-6 col-sm-6 col-md-1'>Range</div>
 						
-						<div class='col-xs-6 col-sm-6 col-md-1'>End</div>
 						<div class='col-xs-6 col-sm-6 col-md-3'>
 							<div class='form-group'>
-									<input type='date' name='event_end' id='event_end' class='form-control input-sm' required>
+									<input type='text' name='event_range' id='event_range' class='form-control input-sm' required>
 							</div>
 						</div>
 						
@@ -279,6 +300,9 @@
 		require_once('javascript_include.php'); 
 		
 	?>
+	<script src="js/moment.min.js"></script>         
+
+        <script src="js/daterangepicker.js"></script>
 	<script>
 		$(document).ready(function()
 		{
@@ -324,8 +348,9 @@
 								Str+="<td><img style='width:50px;height:50px;' src="+JData.image+"></td>";
 								Str+="<td>"+JData.venue.title+"<sub>("+JData.venue.location+")</sub></td>";
 								
-								
-								Str+="<td>"+JData.startdate+" to "+JData.enddate+"</td>";
+								var Starts=MakeDate(JData.startdate);
+								var Ends=MakeDate(JData.enddate);
+								Str+="<td>"+Starts+" to "+Ends+"</td>";
 								Str+="<td>"+JData.description+"</td>";
 								
 								Str+="<td>"+JData.type.title+"</td>";
@@ -337,7 +362,7 @@
 								Str+="<td><a href='#' data-toggle='modal' data-target='#Addevent' data-original-title onclick='Editthis(\""+JData.id+"\")' >Edit</a>";
 								Str+=" | <a data-toggle='modal' data-target='#ConfirmYesNo' data-original-title onclick='Deletethis(\""+JData.id+"\")'>Delete</a></td></tr>";
 							}
-							Str+="<tr><td colspan=8 id='tblPaginate'></td></tr>";
+							Str+="<tr><td colspan=11 id='tblPaginate'></td></tr>";
 							$('#eventtbl').append(Str);
 							
 							Str=pagination	(<?php echo $Page; ?>,data.data[0].totalrecords)	
@@ -351,6 +376,32 @@
 		$('#TIT_Addevent').html("Add");
 		//$('#event_title').val("");
 		$('#OK_btn_CreateFormPopup').attr('name','OK_btn_CreateFormPopup_Addevent');
+	}
+	function MakeDate(Dt)
+	{
+		//09/01/2018 12:00 AM - 09/02/2018 11:00 PM
+		//console.log(Dt)
+		var time = new Date(Dt);
+		//console.log(time)
+		Y = time.getFullYear();
+		X=parseInt(time.getMonth())+1
+		m =X<9?"0"+X:X;
+		d = time.getDate()<9?"0"+time.getDate():time.getDate();
+		if (time.getHours()>12)
+		{
+			var hour = parseInt(time.getHours()) - 12;
+			var amPm = "PM";
+		} else 
+		{
+			var hour = time.getHours(); 
+			var amPm = "AM";
+		}
+		h =hour<9?"0"+hour:hour;
+		mi = time.getMinutes()<9?"0"+time.getMinutes():time.getMinutes();
+		RetStr= d+"/"+m+"/"+Y+" "+h+":"+mi+" "+amPm;
+		//console.log(RetStr);
+		return RetStr
+		
 	}
 	function Editthis(Id)
 	{
@@ -366,8 +417,12 @@
 				clog(J)
 			$('#event_title').val(J.data.title);
 			$('#event_desc').val(J.data.description);
-			$('#event_start').val(J.data.startdate);
-			$('#event_end').val(J.data.enddate);
+			
+			var Starts=MakeDate(J.data.startdate);
+			var Ends=MakeDate(J.data.enddate);
+			$('#event_range').data('daterangepicker').setStartDate(Starts);
+			$('#event_range').data('daterangepicker').setEndDate(Ends);
+			
 			$('#event_type').val(J.data.type.id).attr("selected", "selected");
 			$('#event_fee').val(J.data.fee.id).attr("selected", "selected");
 			$('#event_organiser').val(J.data.organiser.id).attr("selected", "selected");
@@ -388,5 +443,14 @@
 		$('#currentObject').html(Title);
 		$('#IdValue').val(Id);
 	}	
+	$(function() {
+                                $('input[name="event_range"]').daterangepicker({
+                                    timePicker: true,
+                                    timePickerIncrement: 30,
+                                    locale: {
+                                        format: 'DD/MM/YYYY h:mm A'
+                                    }
+                                });
+                            });
 	</script>
 </html>
